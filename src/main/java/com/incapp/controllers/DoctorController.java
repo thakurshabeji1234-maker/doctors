@@ -45,7 +45,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class DoctorController {
 	
 	private RestTemplate restTemplate=new RestTemplate();
-	private String URL="http://localhost:7071/doctor";
+	private String URL="hhttp:doctorrestfulwebservices-production.up.railway.app/doctor";
 	
 	@Autowired
 	BCryptPasswordEncoder passwordEncoder;
@@ -70,7 +70,7 @@ public class DoctorController {
 	}
 	@GetMapping("/DoctorAppointments")
 	public String DoctorAppointments(HttpSession session,ModelMap model) {
-		String URL="http://localhost:7071/appointment";
+		String URL="http:doctorrestfulwebservices-production.up.railway.app/appointment";
 		String API="/getByDoctorEmail/"+((Doctor)session.getAttribute("doctor")).getEmail();
 		List<Appointments> appointments=restTemplate.getForObject(URL+API,List.class);
 		model.addAttribute("apts",appointments);
