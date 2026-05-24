@@ -84,7 +84,7 @@ public class CommonController {
 	@PostMapping("/searchDoctor")
 	public String searchDoctor(HttpSession session, @RequestParam String state,@RequestParam String city,@RequestParam String speciality,ModelMap model) {
 		RestTemplate restTemplate=new RestTemplate();
-		String URL="http://localhost:7071/doctor";
+		String URL="http:doctorrestfulwebservices-production.up.railway.app/";
 		String API="/getDoctors/"+state+"/"+city+"/"+speciality;
 		ResponseEntity<List> result=restTemplate.exchange(URL+API, HttpMethod.GET, null, List.class);
 		List<Doctor> doctors=result.getBody();
@@ -100,7 +100,7 @@ public class CommonController {
 	@PostMapping("/SearchDoctorSpeciality")
 	public String SearchDoctorSpeciality(HttpSession session,@RequestParam String speciality,ModelMap model) {
 		RestTemplate restTemplate=new RestTemplate();
-		String URL="http://localhost:7071/doctor";
+		String URL="http:doctorrestfulwebservices-production.up.railway.app/";
 		String API="/getDoctorsBySpeciality/"+speciality;
 		ResponseEntity<List> result=restTemplate.exchange(URL+API, HttpMethod.GET, null, List.class);
 		List<Doctor> doctors=result.getBody();
@@ -119,7 +119,7 @@ public class CommonController {
 			return "login-signup";
 		}else {
 			RestTemplate restTemplate=new RestTemplate();
-			String URL="http://localhost:7071/doctor";
+			String URL="http:doctorrestfulwebservices-production.up.railway.app/";
 			String API="/getDoctor/"+docEmail;
 			ResponseEntity<Doctor> result=restTemplate.exchange(URL+API, HttpMethod.GET, null, Doctor.class);
 			Doctor doctor=result.getBody();
