@@ -50,7 +50,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class UserController {
 	
 	private RestTemplate restTemplate=new RestTemplate();
-	private String URL="http://localhost:7071/user";
+	private String URL="http:doctorrestfulwebservices-production.up.railway.app/user";
 	
 	@Autowired
 	BCryptPasswordEncoder passwordEncoder;
@@ -100,7 +100,7 @@ public class UserController {
 	}
 	@GetMapping("/UserAppointments")
 	public String UserAppointments(HttpSession session,ModelMap model) {
-		String URL="http://localhost:7071/appointment";
+		String URL="http:doctorrestfulwebservices-production.up.railway.app/appointment";
 		String API="/getByUserEmail/"+((User)session.getAttribute("user")).getEmail();
 		List<Appointments> appointments=restTemplate.getForObject(URL+API,List.class);
 		model.addAttribute("apts",appointments);
@@ -215,7 +215,7 @@ public class UserController {
 	}
 	@GetMapping("/videoCall")
 	public String videoCall(HttpSession session,@RequestParam String email,ModelMap model) throws IOException {
-		String URL="http://localhost:7071/doctor";
+		String URL="http:doctorrestfulwebservices-production.up.railway.app/doctor";
 		String API="/getDoctorOnline/"+email;
 		ResponseEntity<DoctorOnline> result=restTemplate.exchange(URL+API,HttpMethod.GET,null,DoctorOnline.class);
 		DoctorOnline doctorOnline=result.getBody();
