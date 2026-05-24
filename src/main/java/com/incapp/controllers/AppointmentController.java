@@ -26,7 +26,7 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/appointment")
 public class AppointmentController {
 	
-	String URL="http://localhost:7071/appointment";
+	String URL="http:doctorrestfulwebservices-production.up.railway.app/";
 	RestTemplate restTemplate=new RestTemplate();
 	
 	@PostMapping("/addAppointment")
