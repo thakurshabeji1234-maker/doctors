@@ -1,0 +1,93 @@
+<html>
+
+<head>
+<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Doctors</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <style>
+    	body{
+    		overflow-x:hidden; 
+    	}
+        #root {
+			display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+
+<body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-info p-3">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white  fs-1 fw-bold" th:href="@{/doctor/DoctorHome}">Doctors</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link text-white fs-5 fw-bold" href="/doctor/DoctorHome">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white fs-5 fw-bold" href="/doctor/DoctorAppointments">Appointments</a>
+                    </li>
+                    <li class="nav-item">
+						<div th:if="${session.onlineStatus=='offline'}">
+							<a target="_blank" class="btn btn-success " th:href="@{/doctor/DoctorOnline(status=online)}">Go Online</a>
+						</div>
+						<div th:if="${session.onlineStatus=='online'}">
+							<a class="btn btn-danger " th:href="@{/doctor/DoctorOnline(status=offline)}">Go Offline</a>
+						</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div id="root"></div>
+    
+     
+   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+<script src="https://unpkg.com/@zegocloud/zego-uikit-prebuilt/zego-uikit-prebuilt.js"></script>
+<script th:inline="javascript">
+        const roomID = /*[[${roomID}]]*/ "fallbackRoom";
+        const userName = /*[[${userName}]]*/ "fallbackUser";
+
+        const appID = 6456;
+    	const serverSecret = "gfnjgfnjgf";
+    	const userID = Math.floor(Math.random() * 10000) + "";
+
+        const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, roomID, userID, userName);
+
+        const zp = ZegoUIKitPrebuilt.create(kitToken);
+        zp.joinRoom({
+            container: document.querySelector("#root"),
+            scenario: {
+                mode: ZegoUIKitPrebuilt.VideoConference,
+            },
+            turnOnMicrophoneWhenJoining: false,
+            turnOnCameraWhenJoining: false,
+            showMyCameraToggleButton: true,
+            showMyMicrophoneToggleButton: true,
+            showAudioVideoSettingsButton: true,
+            showScreenSharingButton: true,
+            showTextChat: true,
+            showUserList: true,
+            maxUsers: 2,
+            layout: "Auto",
+            showLayoutButton: false,
+        });
+</script>
+
+</html>

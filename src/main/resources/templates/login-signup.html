@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Doctors</title>
+  <style>
+    section>div{
+      width: max-content;
+      margin: auto;
+    }
+    section>div>div{
+      display: inline-block;
+      width: 400px;
+      margin-inline: 60px;
+      vertical-align: top;
+    }
+    section>div>div>img{
+      width: 100%;
+    }
+    section>div>.form{
+      padding-block: 30px;
+      border: 2px solid black;
+      border-radius: 10px;
+      padding: 10px;
+      margin-block: 60px;
+      box-shadow: 5px 25px 5px #17a3b86b, -5px 20px 5px #17a3b86b;
+    }
+    section>div>.form>div{
+      border-bottom: 1px solid #17a3b8d4;
+      padding-block: 5px;
+    }
+    section>div>.form div p{
+      display: inline-block;
+      margin-inline: 20px;
+      font-size: 16px;
+      font-weight: 600;
+      margin-block: auto;
+      cursor: pointer;
+    }
+    section>div>.form div p.active{
+      border: 1px solid #4ee0fad4;
+      background-color: #41dbf3d4;
+      color: rgb(86, 84, 84);
+      border-radius: 5px;
+      padding: 5px;
+    }
+    section>div>div> form{
+      padding:  30px 20px ;
+    }
+    section>div>div>form>div{
+      margin-bottom: 25px;
+    }
+    section>div>div>form input{
+      border: none;
+      border-bottom: 1.5px solid #17a3b8d4;
+      margin-inline: 10px;
+      width: 60%;
+    }
+    section>div>div>form>div:first-child input{
+      margin-inline: 21px;
+
+    }
+    section>div>div>form>button{
+      border: 1px solid #4ee0fad4;
+      background-color: #41dbf3d4;
+      color: rgb(86, 84, 84);
+      font-weight: 700;
+      border-radius: 5px;
+      width: 150px;
+      margin-top: 40px;
+    }
+    #googleLog{
+      display: block;
+      padding-block: 5px;
+      width: 100%;
+      background-color: transparent;
+      border: 2px solid #4ee0fad4;
+    }
+    section>div>div>div:first-child{
+     border: none;
+     text-align: center;
+     color: #0b7587d4;
+     font-weight: 700;
+    }
+    #googleLog img{
+      width: 30px;
+      margin-right: 10px;
+    }
+    section>div>div>p{
+      color: rgb(86, 84, 84);
+      margin-left: 20px;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-info p-3 sticky-top ">
+      <div class="container-fluid ">
+        <a class="navbar-brand text-light fs-1 fw-bolder" href="/">Doctors</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon text-dark"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+          <ul class="navbar-nav mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link text-light fw-bold fs-5" href="/">Home</a>
+            </li>
+        </div>
+      </div>
+    </nav>
+  </header>
+  	<div class="container-fluid">
+            <div th:if="${msg!=null}">
+                <p style='background-color:yellow; padding:10px;' th:text="${msg}"></p>
+            </div>
+        </div>
+  <section>
+    <div>
+      <div>
+        <img th:src="@{/images/doctor.jpg}" alt="">
+      </div>
+
+
+      <!-- User Form  -->
+	
+      <div class="form" id="User">
+        <div>
+          <h5>User-Login</h5>
+        </div>
+        <div>
+          <p onclick="userlog()" id="userlogp" class="active">Login</p>
+          <p onclick="userres()" id="userresp">Register</p>
+        </div>
+
+        <!-- Log in Form -->
+
+        <form th:action="@{/user/login}" id="user-log" method="post">
+          <div>
+            <label for="">User-Id :</label>
+          <input type="email" name="email" placeholder="UserId" required />
+          </div>
+          <div>
+            <label for="">Password :</label>
+          <input type="password" name="password" placeholder="Password" required />
+          </div>
+          <button type="submit">Log-in</button>
+      </form>
+      
+      <!-- Google Login (handled by Spring Security) -->
+    <a th:href="@{/oauth2/authorization/google}">
+        <button><img th:src="@{/images/google.png}" alt=""> Login with Google</button>
+    </a>
+      <br/><br/>
+      
+      <!-- Button trigger modal -->
+<a href='' class="text-primary" data-bs-toggle="modal" data-bs-target="#userForgetPassword">
+  Forget Password
+</a>
+
+<!-- Modal -->
+<div class="modal fade" id="userForgetPassword" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Forget Password</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+	      <form th:action="@{/user/forgetPassword}" id="user-log" method="post">
+	          <div>
+	            <label for="">User-Id :</label>
+	          <input type="email" name="email" placeholder="UserId" required />
+	          </div>
+	          <div>
+	            <label for="">New Password :</label>
+	          <input type="password" name="newpassword" placeholder="Password" required />
+	          </div>
+	          <button type="submit">Submit</button>
+	      </form>
+      </div>
+    </div>
+  </div>
+</div>
+      
+
+      <!-- User Register  -->
+
+      <form th:action="@{/user/register}" id="user-res" style="display: none;" method="post">
+        <div>
+          <label for="">Email :</label>
+        <input type="email" name="email" placeholder="Email" required />
+        </div>
+        <div>
+          <label for="">Password :</label>
+        <input type="password" name="password" placeholder="Password" required />
+        </div>
+        <div>
+        <label for="">Name :</label>
+        <input type="text" name="name"  maxlength="100" placeholder="Name" required />
+        </div>
+        <button type="submit">Sign-up</button>
+    </form>
+
+    <!-- Switch to Doctor Form  -->
+
+       <p onclick="Doctor()">Click here to join as Doctor</p>
+      </div>
+
+
+      <!-- Doctor Form  -->
+
+      <div class="form" id="Doctor" style="display: none;">
+        <div>
+          <h5>Doctor-Login</h5>
+        </div>
+        <div>
+          <p onclick="Doclog()" id="Doclogp" class="active">Login</p>
+          <p onclick="Docres()" id="Docresp">Register</p>
+        </div>
+
+        <!-- Doctor Login  -->
+
+        <form th:action="@{/doctor/login}" id="Doc-log" method="post">
+          <div>
+            <label for="">User-Id :</label>
+          <input type="email" name="email"  placeholder="UserId" required />
+          </div>
+          <div>
+            <label for="">Password :</label>
+          <input type="password" name="password"  placeholder="Password" required />
+          </div>
+          <button type="submit">Log-in</button>
+      </form>
+
+  
+<!-- Button trigger modal -->
+<a href='' class="text-primary" data-bs-toggle="modal" data-bs-target="#doctorForgetPassword">
+  Forget Password
+</a>
+
+<!-- Modal -->
+<div class="modal fade" id="doctorForgetPassword" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Forget Password</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+	      <form th:action="@{/doctor/forgetPassword}" id="user-log" method="post">
+	          <div>
+	            <label for="">Doctor-Id :</label>
+	          <input type="email" name="email" placeholder="DoctorId" required />
+	          </div>
+	          <div>
+	            <label for="">New Password :</label>
+	          <input type="password" name="newpassword" placeholder="Password" required />
+	          </div>
+	          <button type="submit">Submit</button>
+	      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+      <!-- Doctor Register  -->
+
+
+      <form th:action="@{/doctor/register}" id="Doc-res" style="display: none;" method="post">
+        <div>
+          <label for="">Email :</label>
+        <input type="email" name="email"  placeholder="Email" required />
+        </div>
+        <div>
+          <label for="">Password :</label>
+        <input type="password" name="password" placeholder="Password" required />
+        </div>
+        <div>
+        <label for="">Name :</label>
+        <input type="text" name="name" pattern="[a-zA-Z ]+" maxlength="50" placeholder="name" required />
+        </div>
+        <button type="submit">Sign-up</button>
+    </form>
+    
+    <!-- Switch to User Form  -->
+<br><br>
+       <p onclick="User()">Click here to join as User</p>
+      </div>
+    </div>
+   
+  </section>
+
+
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+   const userLog = document.getElementById('user-log');
+   const userRes = document.getElementById('user-res');
+   const userlogp= document.getElementById('userlogp');
+   const userresp = document.getElementById('userresp');
+
+   function userlog(){
+    userLog.style.display="block";
+    userRes.style.display="none";
+    userlogp.classList.add('active');
+    userresp.classList.remove('active');
+   }
+
+   function userres(){
+    userLog.style.display="none";
+    userRes.style.display="block";
+    userresp.classList.add('active');
+    userlogp.classList.remove('active');
+   }
+</script>
+<script>
+  const DocLog = document.getElementById('Doc-log');
+  const DocRes = document.getElementById('Doc-res');
+  const Doclogp= document.getElementById('Doclogp');
+  const Docresp = document.getElementById('Docresp');
+
+  function Doclog(){
+    DocLog.style.display="block";
+    DocRes.style.display="none";
+    Doclogp.classList.add('active');
+    Docresp.classList.remove('active');
+  }
+
+  function Docres(){
+    DocLog.style.display="none";
+   DocRes.style.display="block";
+   Docresp.classList.add('active');
+   Doclogp.classList.remove('active');
+  }
+</script>
+<script>
+  const user = document.getElementById("User");
+  const doctor = document.getElementById("Doctor");
+
+  function User(){
+    doctor.style.display = "none";
+    user.style.display = "inline-block"; 
+}
+
+function Doctor(){
+    user.style.display = "none";
+    doctor.style.display = "inline-block"; 
+}
+</script>
+
+
+ <!-- Browser Notification Script -->
+ <script th:inline="javascript">
+     /*<![CDATA[*/
+     let message = [[${session.message}]];
+
+     if (message !== null && message !== 'null') {
+         if (Notification.permission === "granted") {
+             new Notification(message);
+         } else if (Notification.permission !== "denied") {
+             Notification.requestPermission().then(permission => {
+                 if (permission === "granted") {
+                     new Notification(message);
+                 }
+             });
+         }
+     }
+     /*]]>*/
+</script>
+</html>

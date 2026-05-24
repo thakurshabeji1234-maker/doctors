@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctors</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-info p-3">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white  fs-1 fw-bold" th:href="@{/doctor/DoctorHome}">Doctors</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link text-white fs-5 fw-bold" th:href="@{/doctor/DoctorHome}">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container my-5">
+        <h1 class="text-center mb-4">My Appointments</h1>
+        <div th:if="${msg != null}">
+        	<p class='bg-warning text-center p-2' th:text="${msg}"></p>
+        </div>
+		<!-- Result Section -->
+            <div th:if="${apts != null and !#lists.isEmpty(apts)}" class="row justify-content-center mt-4">
+                <div class="col-lg-8">
+                    <div class="card shadow">
+                        <div class="card-body">
+                           <div th:each="apt : ${apts}" class="card mb-4 shadow-sm">
+                                   <div class="row g-0">
+                                       <!-- Appointment Details Section -->
+                                       <div class="col-md-9">
+                                           <div class="card-body">
+                                               <h5 class="card-title mb-2 fw-bold" th:text="${apt.doctor_email}"></h5>
+                                               <p class="card-text mb-1">
+                                                   <strong>Appointment Date:</strong> <span th:text="${apt.doc_booking_date}"></span>
+                                               </p>
+                                               <p class="card-text mb-1">
+                                                   <strong>Appointment Time:</strong> <span th:text="${apt.doc_booking_time}"></span>
+                                               </p>
+                                               <p class="card-text mb-1">
+                                                   <strong>Patient Name:</strong> <span th:text="${apt.name}"></span>
+                                               </p>
+                                               <p class="card-text mb-1">
+                                                   <small>Booking Date:</small> <small th:text="${apt.booking_date_time}"></small> 
+                                               </p>
+                       						   <p class="card-text mb-1">
+                                                   <small>Status:</small> <strong th:text="${apt.status}"></strong> 
+                                               </p>
+                       						   <div th:if="${apt.status=='Pending'}">
+	                                               <!-- Action Buttons -->
+	                                               <div class="d-flex gap-2 mt-3">
+	                                                   <form th:action="@{/appointment/statusUpdate}" method="post">
+	                                               			<input type="hidden" name="id" th:value="${apt.id}" />
+	                                               			<input type="hidden" name="status" value="Cancelled By Doctor" />
+	                                               			<input type="hidden" name="role" value="doctor" />
+	                                               			<button class="btn btn-danger">Cancel Booking</button>
+	                                               		</form>
+	                                               		<form th:action="@{/appointment/statusUpdate}" method="post">
+	                                               			<input type="hidden" name="id" th:value="${apt.id}" />
+	                                               			<input type="hidden" name="status" value="Completed" />
+	                                               			<input type="hidden" name="role" value="doctor" />
+	                                               			<button class="btn btn-success">Completed</button>
+	                                               		</form>
+	                                               </div>
+                                               </div>
+                                                 
+                                               </div>
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!-- Thymeleaf check for empty appointments -->
+        <div th:unless="${apts != null and !#lists.isEmpty(apts)}" class="empty-state">
+            <i class="fas fa-calendar-times"></i>
+            <h3>No Appointments Yet!</h3>
+        </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
